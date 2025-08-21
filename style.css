@@ -336,4 +336,24 @@ body {
     .app-container { flex-direction: column; }
     .sidebar { width: 100%; min-height: auto; }
     .main-content { width: 100%; padding: 1rem; }
+
+}
+/* --- Footer --- */
+.app-footer {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Style for the login page footer */
+body:has(.login-container) .app-footer {
+    background: var(--sidebar-bg);
+    color: var(--text-light);
+    border-top: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
