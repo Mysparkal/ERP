@@ -111,10 +111,10 @@ async function apiCall(action, data = {}) {
 async function loadDashboardData() {
     const data = await apiCall("getDashboardData");
     if (data) {
-        document.getElementById("totalSales").textContent = `$${data.totalSalesValue.toFixed(2)}`;
-        document.getElementById("totalPurchases").textContent = `$${data.totalPurchaseValue.toFixed(2)}`;
-        document.getElementById("totalExpenses").textContent = `$${data.totalExpenses.toFixed(2)}`;
-        document.getElementById("totalProfit").textContent = `$${data.totalProfit.toFixed(2)}`;
+        document.getElementById("totalSales").textContent = `₹${data.totalSalesValue.toFixed(2)}`;
+        document.getElementById("totalPurchases").textContent = `₹${data.totalPurchaseValue.toFixed(2)}`;
+        document.getElementById("totalExpenses").textContent = `₹${data.totalExpenses.toFixed(2)}`;
+        document.getElementById("totalProfit").textContent = `₹${data.totalProfit.toFixed(2)}`;
         renderSalesChart(data.salesData);
         renderExpenseChart(data.expensesData);
     }
@@ -278,4 +278,5 @@ function exportTableToExcel(tableID, filename = 'data') {
     const table = document.getElementById(tableID);
     const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
     XLSX.writeFile(wb, `${filename}.xlsx`);
+
 }
