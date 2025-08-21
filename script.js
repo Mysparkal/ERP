@@ -12,9 +12,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         initDashboard();
     } else {
+        // --- LOGIN PAGE LOGIC ---
         const loginForm = document.getElementById("loginForm");
         if (loginForm) {
             loginForm.addEventListener("submit", handleLogin);
+        }
+        
+        // --- CHANGE PASSWORD MODAL LOGIC ---
+        const modal = document.getElementById("changePasswordModal");
+        const changePasswordLink = document.getElementById("changePasswordLink");
+        const closeButton = document.querySelector(".modal .close-button");
+        const changePasswordForm = document.getElementById("changePasswordForm");
+
+        if (changePasswordLink) {
+            changePasswordLink.onclick = () => modal.style.display = "block";
+        }
+        if (closeButton) {
+            closeButton.onclick = () => modal.style.display = "none";
+        }
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+        if(changePasswordForm){
+            changePasswordForm.addEventListener("submit", handleChangePassword);
         }
     }
 });
@@ -22,33 +44,65 @@ document.addEventListener("DOMContentLoaded", () => {
 function showLoader() { loader.style.display = 'flex'; }
 function hideLoader() { loader.style.display = 'none'; }
 
+async function apiCall(action, data = {}) {
+    showLoader();
+    try {
+        const response = await fetch(`${SCRIPT_URL}?action=${action}`, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('API Call Error:', error);
+        alert('An error occurred: ' + error.message);
+    } finally {
+        hideLoader();
+    }
+}
+
 function handleLogin(e) {
     e.preventDefault();
-    showLoader();
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    const errorMessage = document.getElementById("error-message");
+    const errorMessage = document.getElementById("login-error-message");
 
-    fetch(SCRIPT_URL + "?action=login", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
+    apiCall("login", { username, password }).then(data => {
         if (data.status === "success") {
             sessionStorage.setItem("loggedIn", "true");
             window.location.href = "dashboard.html";
         } else {
             errorMessage.textContent = data.message;
         }
-    })
-    .catch(error => {
-        console.error("Login Error:", error);
-        errorMessage.textContent = "An error occurred. Please try again.";
-    })
-    .finally(() => hideLoader());
+    });
 }
 
+async function handleChangePassword(e){
+    e.preventDefault();
+    const username = document.getElementById('changeUsername').value;
+    const oldPassword = document.getElementById('oldPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const modalMessage = document.getElementById('modal-message');
+
+    const data = { username, oldPassword, newPassword };
+
+    const response = await apiCall("changePassword", data);
+
+    if(response.status === "success"){
+        modalMessage.textContent = response.message;
+        modalMessage.className = "modal-message success";
+        document.getElementById('changePasswordForm').reset();
+        setTimeout(() => {
+            document.getElementById('changePasswordModal').style.display = 'none';
+            modalMessage.textContent = '';
+        }, 3000); // Hide modal after 3 seconds
+    } else {
+        modalMessage.textContent = response.message;
+        modalMessage.className = "modal-message error";
+    }
+}
+
+
+// --- DASHBOARD FUNCTIONS ---
 async function initDashboard() {
     setupEventListeners();
     await loadDashboardData();
@@ -92,29 +146,13 @@ function switchPage(targetId) {
     document.querySelector(`.nav-link[data-target="${targetId}"]`).classList.add('active');
 }
 
-async function apiCall(action, data = {}) {
-    showLoader();
-    try {
-        const response = await fetch(`${SCRIPT_URL}?action=${action}`, {
-            method: 'POST',
-            body: JSON.stringify(data)
-        });
-        return await response.json();
-    } catch (error) {
-        console.error('API Call Error:', error);
-        alert('An error occurred: ' + error.message);
-    } finally {
-        hideLoader();
-    }
-}
-
 async function loadDashboardData() {
     const data = await apiCall("getDashboardData");
     if (data) {
-        document.getElementById("totalSales").textContent = `₹${data.totalSalesValue.toFixed(2)}`;
-        document.getElementById("totalPurchases").textContent = `₹${data.totalPurchaseValue.toFixed(2)}`;
-        document.getElementById("totalExpenses").textContent = `₹${data.totalExpenses.toFixed(2)}`;
-        document.getElementById("totalProfit").textContent = `₹${data.totalProfit.toFixed(2)}`;
+        document.getElementById("totalSales").textContent = `$${data.totalSalesValue.toFixed(2)}`;
+        document.getElementById("totalPurchases").textContent = `$${data.totalPurchaseValue.toFixed(2)}`;
+        document.getElementById("totalExpenses").textContent = `$${data.totalExpenses.toFixed(2)}`;
+        document.getElementById("totalProfit").textContent = `$${data.totalProfit.toFixed(2)}`;
         renderSalesChart(data.salesData);
         renderExpenseChart(data.expensesData);
     }
@@ -278,5 +316,4 @@ function exportTableToExcel(tableID, filename = 'data') {
     const table = document.getElementById(tableID);
     const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
     XLSX.writeFile(wb, `${filename}.xlsx`);
-
 }
