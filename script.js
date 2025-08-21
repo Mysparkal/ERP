@@ -1,5 +1,5 @@
 // IMPORTANT: Paste your new Google Apps Script Web App URL here
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTNdd-WHrXMambb6PBL53SC_I7Q8hO27Gpqe98UtPep-LVtY8Rp325HtbvhKKAd74K/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6-yRiHnL1E1UUXTICr_N7ZX0-QtxhBrUE9wdNKEFAWtpBtbnjq8x1rqCOoQkHu4sv/exec";
 const loader = document.getElementById('loader');
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -317,3 +317,4 @@ function exportTableToExcel(tableID, filename = 'data') {
     const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
     XLSX.writeFile(wb, `${filename}.xlsx`);
 }
+
