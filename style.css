@@ -56,12 +56,17 @@ body {
 }
 
 /* --- Login Page --- */
+.login-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--sidebar-bg), var(--primary-color));
+}
 .login-container {
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, var(--sidebar-bg), var(--primary-color));
 }
 .login-box {
     background: var(--card-bg);
@@ -186,7 +191,7 @@ body {
 .main-content {
     flex-grow: 1;
     padding: 2rem;
-    width: calc(100% - 260px); /* Prevent content from expanding past the viewport */
+    width: calc(100% - 260px); 
 }
 .main-header {
     margin-bottom: 2rem;
@@ -252,8 +257,8 @@ body {
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: var(--shadow);
-    position: relative; /* CRITICAL FIX: Constrains the chart canvas */
-    height: 400px; /* Give a defined height */
+    position: relative;
+    height: 400px;
 }
 .chart-container h3 {
     margin-bottom: 1rem;
@@ -328,34 +333,23 @@ body {
 .export-btn i {
     margin-right: 0.5rem;
 }
-/* Responsive */
-@media (max-width: 1200px) {
-    .charts-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 768px) {
-    .app-container { flex-direction: column; }
-    .sidebar { width: 100%; min-height: auto; }
-    .main-content { width: 100%; padding: 1rem; }
 
-}
 /* --- Footer --- */
 .app-footer {
     text-align: center;
     padding: 1.5rem;
+    font-size: 0.9rem;
+}
+/* Dashboard footer */
+.main-content > .app-footer {
     margin-top: 2rem;
     color: var(--text-secondary);
-    font-size: 0.9rem;
     border-top: 1px solid var(--border-color);
 }
-
-/* Style for the login page footer */
-body:has(.login-container) .app-footer {
-    background: var(--sidebar-bg);
+/* Login page footer */
+.login-page-wrapper > .app-footer {
+    background: transparent;
     color: var(--text-light);
-    border-top: none;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
 }
 
 /* --- Change Password Link --- */
@@ -431,4 +425,14 @@ body:has(.login-container) .app-footer {
 }
 .modal-message.error {
     color: var(--expense-color);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+    .charts-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .app-container { flex-direction: column; }
+    .sidebar { width: 100%; min-height: auto; }
+    .main-content { width: 100%; padding: 1rem; }
 }
