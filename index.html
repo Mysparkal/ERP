@@ -23,7 +23,32 @@
                 </div>
                 <button type="submit" class="submit-btn">Login</button>
             </form>
-            <div id="error-message" class="error-message"></div>
+            <div id="login-error-message" class="error-message"></div>
+            <a href="#" id="changePasswordLink" class="change-password-link">Change Password</a>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Change Password</h2>
+            <form id="changePasswordForm">
+                <div class="input-group">
+                    <input type="text" id="changeUsername" required>
+                    <label for="changeUsername">Username</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="oldPassword" required>
+                    <label for="oldPassword">Old Password</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="newPassword" required>
+                    <label for="newPassword">New Password</label>
+                </div>
+                <button type="submit" class="submit-btn">Update Password</button>
+            </form>
+            <div id="modal-message" class="modal-message"></div>
         </div>
     </div>
 
@@ -31,13 +56,12 @@
     <div id="loader" class="loader-wrapper" style="display: none;">
         <div class="spinner"></div>
     </div>
+
     <script src="script.js"></script>
+    
     <footer class="app-footer">
         <p>Design and Developed by Raj Saxena</p>
         <p>For Any Support Contact - 09410062689</p>
     </footer>
 </body>
 </html>
-
-
-
