@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div id="loader" class="loader-wrapper" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-warehouse"></i> My ERP</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="nav-link active" data-target="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                    <li><a href="#" class="nav-link" data-target="products"><i class="fas fa-boxes-stacked"></i> Inventory</a></li>
+                    <li><a href="#" class="nav-link" data-target="purchases"><i class="fas fa-shopping-cart"></i> Purchases</a></li>
+                    <li><a href="#" class="nav-link" data-target="sales"><i class="fas fa-dollar-sign"></i> Sales</a></li>
+                    <li><a href="#" class="nav-link" data-target="expenses"><i class="fas fa-file-invoice-dollar"></i> Expenses</a></li>
+                    <li><a href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-content">
+            <header class="main-header">
+                <h1 id="page-title">Dashboard</h1>
+            </header>
+            <main>
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="page active">
+                    <div class="stats-cards">
+                        <div class="card sale">
+                            <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="card-info">
+                                <h4>Total Sales</h4>
+                                <p id="totalSales">$0</p>
+                            </div>
+                        </div>
+                         <div class="card purchase">
+                            <div class="card-icon"><i class="fas fa-shopping-cart"></i></div>
+                            <div class="card-info">
+                                <h4>Total Purchases</h4>
+                                <p id="totalPurchases">$0</p>
+                            </div>
+                        </div>
+                        <div class="card expense">
+                            <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                            <div class="card-info">
+                                <h4>Total Expenses</h4>
+                                <p id="totalExpenses">$0</p>
+                            </div>
+                        </div>
+                        <div class="card profit">
+                            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="card-info">
+                                <h4>Total Profit</h4>
+                                <p id="totalProfit">$0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>Sales Over Time</h3>
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Expense Breakdown</h3>
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Inventory Section -->
+                <section id="products" class="page">
+                    <form id="addProductForm" class="data-form">
+                        <input type="text" id="addProductName" placeholder="Product Name" required>
+                        <input type="number" step="0.01" id="addCostPrice" placeholder="Cost Price" required>
+                        <input type="number" step="0.01" id="addSalePrice" placeholder="Sale Price" required>
+                        <button type="submit">Add New Product</button>
+                    </form>
+                    <div class="table-wrapper">
+                        <button class="export-btn" data-table="productsTable"><i class="fas fa-file-excel"></i> Export</button>
+                        <table id="productsTable" class="data-table">
+                            <thead>
+                                <tr><th>ID</th><th>Name</th><th>Cost Price</th><th>Sale Price</th><th>Quantity</th><th>Value</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Purchases Section -->
+                <section id="purchases" class="page">
+                    <form id="addPurchaseForm" class="data-form">
+                        <select id="purchaseProductId" required></select>
+                        <input type="number" id="purchaseQuantity" placeholder="Quantity" required min="1">
+                        <button type="submit">Add Purchase</button>
+                    </form>
+                    <div class="table-wrapper">
+                         <button class="export-btn" data-table="purchasesTable"><i class="fas fa-file-excel"></i> Export</button>
+                        <table id="purchasesTable" class="data-table">
+                            <thead>
+                                <tr><th>ID</th><th>Product ID</th><th>Name</th><th>Quantity</th><th>Cost Price</th><th>Total</th><th>Date</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                 <!-- Sales Section -->
+                <section id="sales" class="page">
+                    <form id="addSaleForm" class="data-form">
+                        <select id="saleProductId" required></select>
+                        <input type="number" id="saleQuantity" placeholder="Quantity" required min="1">
+                        <button type="submit">Add Sale</button>
+                    </form>
+                     <div class="table-wrapper">
+                        <button class="export-btn" data-table="salesTable"><i class="fas fa-file-excel"></i> Export</button>
+                        <table id="salesTable" class="data-table">
+                            <thead>
+                                <tr><th>ID</th><th>Product ID</th><th>Name</th><th>Quantity</th><th>Sale Price</th><th>Total</th><th>COGS</th><th>Date</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Expenses Section -->
+                <section id="expenses" class="page">
+                    <form id="addExpenseForm" class="data-form">
+                        <input type="text" id="expenseCategory" placeholder="Expense Category (e.g., Marketing)" required>
+                        <input type="number" step="0.01" id="expenseAmount" placeholder="Amount" required>
+                        <button type="submit">Add Expense</button>
+                    </form>
+                    <div class="table-wrapper">
+                        <button class="export-btn" data-table="expensesTable"><i class="fas fa-file-excel"></i> Export</button>
+                        <table id="expensesTable" class="data-table">
+                            <thead>
+                                <tr><th>ID</th><th>Category</th><th>Amount</th><th>Date</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

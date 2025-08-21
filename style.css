@@ -1,0 +1,339 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #4A90E2;
+    --primary-hover: #357ABD;
+    --sidebar-bg: #1e293b;
+    --main-bg: #f1f5f9;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-light: #f8fafc;
+    --border-color: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --sale-color: #22c55e;
+    --purchase-color: #f97316;
+    --expense-color: #ef4444;
+    --profit-color: #8b5cf6;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--main-bg);
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+/* --- Loader Spinner --- */
+.loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.spinner {
+    border: 5px solid var(--border-color);
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Login Page --- */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, var(--sidebar-bg), var(--primary-color));
+}
+.login-box {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.login-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+.login-box p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+.input-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.input-group input:focus {
+    border-color: var(--primary-color);
+}
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 0.8rem;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+    transition: all 0.3s;
+}
+.input-group input:focus + label, .input-group input:valid + label {
+    top: -0.5rem;
+    left: 0.5rem;
+    font-size: 0.8rem;
+    background: var(--card-bg);
+    padding: 0 0.25rem;
+    color: var(--primary-color);
+}
+.submit-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.submit-btn:hover {
+    background: var(--primary-hover);
+}
+.error-message {
+    color: var(--expense-color);
+    margin-top: 1rem;
+    min-height: 1rem;
+}
+
+/* --- Main App Layout --- */
+.app-container {
+    display: flex;
+}
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: var(--text-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s;
+}
+.sidebar-header {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #334155;
+}
+.sidebar-header h2 i {
+    margin-right: 0.5rem;
+}
+.sidebar-nav ul {
+    list-style: none;
+    padding: 1rem 0;
+}
+.sidebar-nav ul li a {
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    margin: 0.25rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.sidebar-nav ul li a i {
+    margin-right: 1rem;
+    width: 20px;
+    text-align: center;
+}
+.sidebar-nav ul li a:hover, .sidebar-nav ul li a.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+#logout {
+    margin-top: auto;
+}
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    width: calc(100% - 260px); /* Prevent content from expanding past the viewport */
+}
+.main-header {
+    margin-bottom: 2rem;
+}
+#page-title {
+    font-size: 2rem;
+    font-weight: 600;
+}
+.page {
+    display: none;
+}
+.page.active {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+/* --- Dashboard --- */
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.card-icon {
+    font-size: 2rem;
+    padding: 1rem;
+    border-radius: 50%;
+    color: white;
+}
+.card.sale .card-icon { background: var(--sale-color); }
+.card.purchase .card-icon { background: var(--purchase-color); }
+.card.expense .card-icon { background: var(--expense-color); }
+.card.profit .card-icon { background: var(--profit-color); }
+.card-info h4 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+.card-info p {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+.charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+.chart-container {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    position: relative; /* CRITICAL FIX: Constrains the chart canvas */
+    height: 400px; /* Give a defined height */
+}
+.chart-container h3 {
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* --- Forms & Tables --- */
+.data-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+.data-form input, .data-form select {
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+.data-form button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 0.8rem;
+}
+.data-form button:hover {
+    background: var(--primary-hover);
+}
+.table-wrapper {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+}
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.data-table th, .data-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+.data-table thead {
+    background-color: var(--main-bg);
+}
+.data-table th {
+    font-weight: 600;
+}
+.export-btn {
+    background: var(--sale-color);
+    border: none;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s;
+}
+.export-btn:hover {
+    background: #16a34a;
+}
+.export-btn i {
+    margin-right: 0.5rem;
+}
+/* Responsive */
+@media (max-width: 1200px) {
+    .charts-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .app-container { flex-direction: column; }
+    .sidebar { width: 100%; min-height: auto; }
+    .main-content { width: 100%; padding: 1rem; }
+}
