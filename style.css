@@ -357,3 +357,78 @@ body:has(.login-container) .app-footer {
     bottom: 0;
     width: 100%;
 }
+
+/* --- Change Password Link --- */
+.change-password-link {
+    display: block;
+    margin-top: 1.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.change-password-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* --- Change Password Modal --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-message {
+    text-align: center;
+    margin-top: 1rem;
+    min-height: 1rem;
+    font-weight: 600;
+}
+.modal-message.success {
+    color: var(--sale-color);
+}
+.modal-message.error {
+    color: var(--expense-color);
+}
