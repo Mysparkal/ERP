@@ -436,3 +436,41 @@ body {
     .sidebar { width: 100%; min-height: auto; }
     .main-content { width: 100%; padding: 1rem; }
 }
+
+/* --- Maintenance Page --- */
+.maintenance-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    background: linear-gradient(135deg, var(--sidebar-bg), var(--primary-color));
+    color: var(--text-light);
+}
+
+.maintenance-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    max-width: 600px;
+}
+
+.maintenance-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    background: white;
+    padding: 1.5rem;
+    border-radius: 50%;
+}
+
+.maintenance-box h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.maintenance-box p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
